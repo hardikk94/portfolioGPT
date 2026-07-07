@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Sidebar.module.css';
+import resumePdf from '../assets/Hardik-Kothari-Resume.pdf';
 
 const FACTS = [
   { label: 'Current',    value: 'Avalara · Remote' },
@@ -75,7 +76,7 @@ export default function Sidebar() {
       </div>
 
       {/* Download */}
-      <a className={styles.download} href="/Hardik-Kothari-Resume.pdf" download>
+      <a className={styles.download} href={resumePdf} download="Hardik-Kothari-Resume.pdf">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 15V3"/><path d="M7 10l5 5 5-5"/><path d="M3 19h18"/>
         </svg>
