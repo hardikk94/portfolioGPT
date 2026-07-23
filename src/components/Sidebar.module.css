@@ -8,6 +8,7 @@
   padding: 28px 20px;
   gap: 24px;
   overflow-y: auto;
+  animation: popIn .35s ease both;
 }
 .panel::-webkit-scrollbar { width: 0; }
 
@@ -22,16 +23,12 @@
 .avatar {
   width: 56px; height: 56px;
   border-radius: 50%;
-  background: #111;
-  color: #fff;
-  font-family: var(--display);
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: -0.5px;
+  object-fit: cover;
+  background: var(--gradient);
+  border: 2px solid var(--border);
+  transition: transform .2s ease;
 }
+.avatar:hover { transform: scale(1.07) rotate(-4deg); }
 .name {
   font-family: var(--display);
   font-size: 15px;
@@ -56,7 +53,7 @@
   content: '';
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #111;
+  background: var(--accent-2);
   animation: pulse 2s infinite;
 }
 
@@ -69,7 +66,7 @@
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #bbb;
+  color: var(--muted);
   margin-bottom: 8px;
 }
 
@@ -85,14 +82,19 @@
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 5px;
-  background: #fff;
+  background: rgba(255,255,255,.05);
   border: 1px solid var(--border);
   color: var(--text);
   font-family: monospace;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(74,144,217,.2);
 }
 .tagHi {
-  background: #111;
-  border-color: #111;
+  background: var(--gradient);
+  border-color: transparent;
   color: #fff;
 }
 
@@ -110,17 +112,20 @@
   transition: background .12s, color .12s;
 }
 .link:hover { background: var(--border); color: var(--text); }
-.linkIcon { font-size: 13px; width: 16px; text-align: center; }
+.link:hover .linkIcon { transform: translateX(3px); }
+.linkIcon { font-size: 13px; width: 16px; text-align: center; transition: transform .15s ease; }
 
 /* download */
 .download {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
   width: 100%;
-  padding: 10px;
-  background: #111;
+  padding: 14px;
+  background: var(--gradient);
   color: #fff;
   border: none;
   border-radius: 9px;
@@ -134,6 +139,15 @@
 }
 .download:hover  { opacity: 0.82; transform: translateY(-1px); }
 .download:active { transform: scale(0.97); }
+.download::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+  transform: translateX(-120%) skewX(-15deg);
+}
+.download:hover::after { animation: shimmer .9s ease; }
 .download svg {
   width: 13px; height: 13px;
   stroke: #fff; fill: none;

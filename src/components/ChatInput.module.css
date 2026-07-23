@@ -13,8 +13,9 @@
   transition: border-color .15s, box-shadow .15s;
 }
 .box:focus-within {
-  border-color: #ccc;
-  box-shadow: 0 0 0 3px rgba(0,0,0,.04);
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(74,144,217,.18);
+  animation: ringPulse .6s ease-out;
 }
 .input {
   flex: 1;
@@ -29,13 +30,13 @@
   line-height: 1.5;
   padding: 2px 0;
 }
-.input::placeholder { color: #ccc; }
+.input::placeholder { color: var(--muted); font-style: italic; }
 .input:disabled { cursor: not-allowed; }
 
 .sendBtn {
   width: 33px; height: 33px;
   border-radius: 50%;
-  background: #111;
+  background: var(--gradient);
   border: none;
   cursor: pointer;
   display: flex;
@@ -43,16 +44,16 @@
   justify-content: center;
   flex-shrink: 0;
   color: #fff;
-  transition: background .13s, transform .1s;
+  transition: transform .1s, box-shadow .25s ease;
 }
-.sendBtn:hover:not(:disabled)  { background: #333; }
+.sendBtn:hover:not(:disabled)  { transform: scale(1.08); box-shadow: 0 4px 14px rgba(74,144,217,.45); }
 .sendBtn:active:not(:disabled) { transform: scale(.91); }
-.sendBtn:disabled { background: #ddd; cursor: not-allowed; color: #aaa; }
+.sendBtn:disabled { background: rgba(255,255,255,.08); cursor: not-allowed; color: var(--muted); box-shadow: none; }
 .sendBtn svg { width: 14px; height: 14px; }
 
 .hint {
   text-align: center;
   font-size: 10.5px;
-  color: #ccc;
+  color: var(--muted);
   margin-top: 7px;
 }

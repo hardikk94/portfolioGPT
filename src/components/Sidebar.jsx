@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from './Sidebar.module.css';
 import resumePdf from '../assets/Hardik-Kothari-Resume.pdf';
+import profilePhoto from '../assets/me.jpg';
 
 const FACTS = [
   { label: 'Current',    value: 'Avalara · Remote' },
   { label: 'Location',   value: 'Pune, India' },
   { label: 'Experience', value: '9+ years' },
-  { label: 'Education',  value: 'IIT Kanpur · M.Sc. IT' },
+  { label: 'Education',  value: ['M.Sc. IT · Gujarat University', 'GenAI/ML Cert. · IIT Kanpur'] },
 ];
 
 const STACK_HI  = ['React', 'TypeScript', 'Node.js', 'Java'];
@@ -24,7 +25,7 @@ export default function Sidebar() {
 
       {/* Profile */}
       <div className={styles.profile}>
-        <div className={styles.avatar}>HK</div>
+        <img className={styles.avatar} src={profilePhoto} alt="Hardik Kothari" />
         <div className={styles.name}>Hardik Kothari</div>
         <div className={styles.role}>Senior SDE IV · Fintech &amp; Full-Stack</div>
         <span className={styles.status}>Available for opportunities</span>
@@ -39,7 +40,11 @@ export default function Sidebar() {
           {FACTS.map(f => (
             <div key={f.label} className={styles.fact}>
               <span className={styles.factLabel}>{f.label}</span>
-              <span className={styles.factValue}>{f.value}</span>
+              {Array.isArray(f.value) ? (
+                f.value.map(line => <span key={line} className={styles.factValue}>{line}</span>)
+              ) : (
+                <span className={styles.factValue}>{f.value}</span>
+              )}
             </div>
           ))}
         </div>

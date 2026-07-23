@@ -3,15 +3,23 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #ffffff;
-  --surface: #f7f7f7;
-  --border:  #ebebeb;
-  --text:    #111111;
-  --muted:   #999999;
-  --light:   #f2f2f2;
+  --bg:      #0a1420;
+  --surface: #101f34;
+  --border:  rgba(255,255,255,.09);
+  --text:    #f2f5f9;
+  --muted:   #8ea3bd;
+  --light:   #16293f;
   --font:    'Inter', sans-serif;
   --display: 'Space Grotesk', sans-serif;
+
+  --accent-1: #2f6fb0;
+  --accent-2: #4a90d9;
+  --accent-3: #7ec8ea;
+  --accent-teal: #1f9e97;
+  --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2) 55%, var(--accent-3));
 }
+
+::selection { background: var(--accent-2); color: #fff; }
 
 html, body, #root {
   height: 100%;
@@ -33,4 +41,49 @@ html, body, #root {
 @keyframes bounce {
   0%, 60%, 100% { transform: translateY(0); }
   30% { transform: translateY(-5px); }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(8px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes wave {
+  0%, 100%  { transform: rotate(0deg); }
+  10%, 30%  { transform: rotate(14deg); }
+  20%       { transform: rotate(-8deg); }
+  40%       { transform: rotate(14deg); }
+  50%       { transform: rotate(-4deg); }
+  60%       { transform: rotate(10deg); }
+  70%, 90%  { transform: rotate(0deg); }
+}
+@keyframes ringPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,144,217,.35); }
+  70%  { box-shadow: 0 0 0 6px rgba(74,144,217,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,144,217,0); }
+}
+@keyframes shimmer {
+  from { transform: translateX(-120%) skewX(-15deg); }
+  to   { transform: translateX(220%) skewX(-15deg); }
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes auroraDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(4%, 6%) scale(1.1); }
+  100% { transform: translate(-3%, -4%) scale(0.95); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

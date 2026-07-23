@@ -11,7 +11,7 @@ const TOPICS = [
   {
     id: 'greeting',
     signals: ['hi', 'hey', 'hello', 'hii', 'yo', 'sup', 'namaste', 'good morning', 'good evening', 'good afternoon', 'whats up', "what's up", 'howdy'],
-    answer: `Namaste! 👋 I'm Hardik's AI assistant. Ask me anything about his experience, projects, skills, or how to get in touch.<br/><br/>Try asking:<ul><li>What's your current role?</li><li>Tell me about Hopscotch</li><li>What's your tech stack?</li><li>How can I contact Hardik?</li></ul>`
+    answer: `Namaste! 👋 I'm Ask Hardik. Ask me anything about his experience, projects, skills, or how to get in touch.<br/><br/>Try asking:<ul><li>What's your current role?</li><li>Tell me about Hopscotch</li><li>What's your tech stack?</li><li>How can I contact Hardik?</li></ul>`
   },
   {
     id: 'smalltalk',
@@ -35,7 +35,7 @@ const TOPICS = [
   },
   {
     id: 'experience',
-    signals: ['work history', 'work experience', 'career', 'previous job', 'previous company', 'previous companies', 'previous work', 'companies worked', 'where worked', 'past jobs', 'past companies', 'job history', 'employment history', 'companies he worked', 'companies have you worked', 'biggest project'],
+    signals: ['work history', 'work experience', 'career', 'previous job', 'previous company', 'previous companies', 'previous work', 'companies worked', 'where worked', 'past jobs', 'past companies', 'job history', 'employment history', 'companies he worked', 'companies have you worked', 'biggest project', 'experience by company', 'experience with company name', 'company wise experience', 'experience with each company'],
     answer: `Hardik has <strong>9+ years of experience</strong> across 3 companies:<br/><br/><strong>1. Avalara</strong> — SDE IV (2024–Present)<br/>Leading fintech engineering, remote from Pune.<br/><br/><strong>2. Simform</strong> — Technical Lead (2019–2024 · 5yr 11mo)<br/>Led Hopscotch from MVP to a $10M+ funded product — his biggest project to date. Built microservices, micro-frontend architecture, real-time systems.<br/><br/><strong>3. Biztech</strong> — Senior Software Engineer (2017–2019 · 2yr 7mo)<br/>Enterprise apps with Angular, Ionic, ElectronJS. Built Water Expert IoT platform (60% maintenance reduction).`
   },
   {
@@ -82,12 +82,53 @@ const TOPICS = [
   {
     id: 'education',
     signals: ['education', 'educational', 'degree', 'college', 'university', 'qualification', 'where did he study', 'where did you study', 'academic background', 'educational background', 'msc', 'bsc', 'studied', 'study', 'graduate', 'graduation', 'school'],
-    answer: `Hardik's educational background:<br/><br/><strong>B.Sc. CA and IT</strong><br/>K.S. School of Business Management, Gujarat University — 2011 to 2014<br/><br/><strong>M.Sc. CA and IT</strong><br/>K.S. School of Business Management, Gujarat University — 2014 to 2016<br/><br/><strong>Generative AI and Machine Learning (in progress)</strong><br/>IIT Kanpur — 2025 to 2026`
+    answer: `Hardik's educational background:<br/><br/><strong>B.Sc. CA and IT</strong><br/>K. S. School of Business Management and Information Technology, Gujarat University — 2011 to 2014<br/><br/><strong>M.Sc. CA and IT</strong><br/>K. S. School of Business Management and Information Technology, Gujarat University — 2014 to 2016<br/><br/><strong>Professional Certificate Course in Generative AI and Machine Learning (in progress)</strong><br/>IIT Kanpur — 2025 to 2026`
   },
   {
     id: 'certifications',
     signals: ['certification', 'certifications', 'certificate', 'certificates', 'credential', 'credentials', 'iim', 'udemy', 'iit kanpur', 'training program', 'courses done', 'courses completed'],
-    answer: `Hardik holds 3 certifications:<br/><br/><strong>Generative AI and Machine Learning</strong><br/>IIT Kanpur — 2025 to 2026 (in progress)<br/><br/><strong>Leadership Skills</strong><br/>IIM Ahmedabad — 2025<br/><br/><strong>Master Electron: Desktop Apps</strong><br/>Udemy — 2021`
+    answer: `Hardik holds 3 certifications:<br/><br/><strong>Professional Certificate Course in Generative AI and Machine Learning</strong><br/>IIT Kanpur — 2025 to 2026 (in progress)<br/><br/><strong>Leadership Skills</strong><br/>IIM Ahmedabad — 2025<br/><br/><strong>Master Electron: Desktop Apps</strong><br/>Udemy — 2021`
+  },
+  {
+    id: 'domain',
+    signals: ['domain', 'industry', 'sector', 'domain expertise', 'which domain', 'what domain', 'what industry', 'what sector', 'domain experience', 'which industry'],
+    answer: `Hardik's primary domain is <strong>Fintech</strong> — most of his career has been building payment platforms, banking integrations, and compliance systems (KYC/KYB, ACH, fraud prevention) at Avalara and Simform.<br/><br/>He also has experience in <span class="tag">SaaS</span>, <span class="tag">IoT</span>, and <span class="tag">Enterprise/Desktop</span> applications from earlier roles at Biztech.`
+  },
+  {
+    id: 'react_years',
+    signals: ['relevant experience in react', 'years of experience in react', 'react years of experience', 'how many years of react', 'react experience in years'],
+    weight: 2,
+    answer: `Hardik has <strong>6 years</strong> of relevant hands-on experience with <span class="tag">React</span>, using it across nearly every major product he's built — Hopscotch, Avalara Capital, Newton Mail, and YAC.`
+  },
+  {
+    id: 'frontend_years',
+    signals: ['relevant experience in frontend', 'years of experience in frontend', 'frontend years of experience', 'how many years of frontend', 'frontend experience in years'],
+    weight: 2,
+    answer: `Hardik has <strong>9 years</strong> of relevant frontend experience, spanning <span class="tag">React</span>, <span class="tag">Angular</span>, <span class="tag">Vue.js</span>, and <span class="tag">TypeScript</span> across web, desktop (Electron), and mobile.`
+  },
+  {
+    id: 'backend_years',
+    signals: ['relevant experience in backend', 'years of experience in backend', 'backend years of experience', 'how many years of backend', 'backend experience in years'],
+    weight: 2,
+    answer: `Hardik has <strong>4 years</strong> of relevant backend experience, building APIs and services with <span class="tag">Node.js</span>, <span class="tag">NestJS</span>, <span class="tag">Java</span>, and <span class="tag">GraphQL</span> — largely in fintech systems handling payments and compliance.`
+  },
+  {
+    id: 'node_mongo_postgres_years',
+    signals: ['relevant experience in node.js mongo postgresql', 'years of experience in node mongo postgresql', 'node mongo postgresql experience', 'nodejs mongo postgresql years', 'experience with node mongo and postgresql'],
+    weight: 2,
+    answer: `Hardik has <strong>3 years</strong> of relevant experience specifically with the <span class="tag">Node.js</span> + <span class="tag">MongoDB</span> + <span class="tag">PostgreSQL</span> stack, building backend services and data layers for production systems.`
+  },
+  {
+    id: 'java_years',
+    signals: ['relevant experience in java', 'years of experience in java', 'java years of experience', 'how many years of java', 'java experience in years'],
+    weight: 2,
+    answer: `Hardik has <strong>1 year</strong> of relevant hands-on experience with <span class="tag">Java</span>, primarily used for secure backend and payment infrastructure in fintech systems at Avalara and Simform.`
+  },
+  {
+    id: 'team_size',
+    signals: ['team size managed', 'team size', 'size of team', 'how many people does he manage', 'team he manage', 'manage a team of', 'handle a team of', 'people he managed', 'engineers he managed', 'team he led'],
+    weight: 2,
+    answer: `Hardik has led and managed engineering teams of up to <strong>7 people</strong>, running sprint planning, architecture reviews, and mentoring across Avalara, Simform, and Biztech.`
   },
   {
     id: 'electron',
@@ -136,8 +177,13 @@ const TOPICS = [
   },
   {
     id: 'personal',
-    signals: ['age', 'married', 'hobbies', 'hobby', 'favorite', 'personal life', 'free time'],
+    signals: ['age', 'married', 'favorite', 'personal life'],
     answer: `I'm focused on Hardik's professional background — his work, projects, skills, and experience. For anything more personal, the best way to ask is directly: hardikkothari46@gmail.com.`
+  },
+  {
+    id: 'hobbies',
+    signals: ['hobby', 'hobbies', 'free time', 'interests', 'extracurricular', 'extra curricular', 'pastime', 'what does he do for fun', 'outside of work', 'personal interests', 'yoga'],
+    answer: `Outside of work, Hardik enjoys <strong>swimming</strong>, <strong>reading books</strong>, <strong>travelling</strong>, and <strong>cooking</strong>.<br/><br/>He's also a <strong>certified Yoga Instructor</strong>, certified by the Government of Gujarat.`
   },
 ];
 
@@ -149,6 +195,24 @@ const SOFT_FALLBACK_SIGNALS = ['he', 'his', 'him', 'hardik', 'work', 'good', 'sk
 const HARD_FALLBACK = `I didn't quite get that — could you try rephrasing? You can ask me about:<ul><li>Hardik's <strong>current role</strong> or <strong>experience</strong></li><li>Products like <strong>Hopscotch</strong>, Newton Mail, or YAC</li><li>His <strong>tech stack</strong> or <strong>fintech APIs</strong></li><li>His <strong>education</strong> or <strong>certifications</strong></li><li>How to <strong>contact</strong> him</li></ul>`;
 
 const SOFT_FALLBACK = `Good question — I don't have a specific answer for that exact phrasing, but here's a quick overview that might help:<br/><br/>Hardik Kothari is a <strong>Senior Software Engineer with 9+ years of experience</strong>, currently <strong>SDE IV at Avalara</strong>, working across <span class="tag">React</span> <span class="tag">TypeScript</span> <span class="tag">Node.js</span> <span class="tag">Java</span> and fintech systems.<br/><br/>Feel free to ask more specifically about his <strong>experience</strong>, <strong>tech stack</strong>, <strong>products</strong>, or <strong>contact info</strong> — or reach him directly at hardikkothari46@gmail.com.`;
+
+// Phrases that signal "trying to use this as a general chatbot" rather than
+// asking about Hardik — jailbreak attempts, homework, code requests, trivia,
+// creative writing. Checked before topic scoring so obvious misuse never
+// even reaches the LLM correction step.
+const MISUSE_SIGNALS = [
+  'ignore previous instructions', 'ignore all instructions', 'ignore the above',
+  'disregard your instructions', 'disregard previous instructions', 'new instructions',
+  'system prompt', 'jailbreak', 'developer mode', 'dan mode',
+  'are you chatgpt', 'are you gpt', 'you are chatgpt', 'as an ai language model',
+  'pretend you are', 'pretend to be', 'act as a', 'roleplay as', 'role play as',
+  'write me a poem', 'write a poem about', 'write an essay about', 'write my essay',
+  'do my homework', 'solve this equation', 'what is the capital of', 'tell me a joke',
+  'flip a coin', 'translate this into', 'translate the following', 'summarize the following',
+  'write a python', 'write a javascript', 'write a sql', 'give me a recipe', 'recipe for',
+];
+
+const MISUSE_FALLBACK = `Ha, nice try 😄 — but I'm not ChatGPT, I'm <strong>Hardik's</strong> AI, and my entire personality is "knows everything about one guy's career." No poems, no homework, no jailbreaks, no free code — ChatGPT's right over there for that.<br/><br/>What I'm actually built for: his <strong>experience</strong>, <strong>tech stack</strong>, <strong>projects</strong> like Hopscotch, or how to <strong>contact</strong> him. Try one of those?`;
 
 // Normalize text: lowercase, strip punctuation, collapse whitespace
 function normalize(str) {
@@ -181,9 +245,16 @@ function scoreTopic(question, topic) {
   return score;
 }
 
-export function getResponse(userText) {
+// Scores `userText` against every topic and returns whichever one wins.
+// `matched: false` means nothing scored — the answer is one of the generic
+// fallback messages rather than a real topic hit.
+export function matchTopic(userText) {
   const q = normalize(userText);
-  if (!q) return HARD_FALLBACK;
+  if (!q) return { matched: false, answer: HARD_FALLBACK };
+
+  if (MISUSE_SIGNALS.some(signal => q.includes(signal))) {
+    return { matched: true, answer: MISUSE_FALLBACK };
+  }
 
   let best = null;
   let bestScore = 0;
@@ -197,7 +268,7 @@ export function getResponse(userText) {
   }
 
   if (best && bestScore >= 1) {
-    return best.answer;
+    return { matched: true, answer: best.answer };
   }
 
   // Nothing scored at all — check if the question is at least vaguely
@@ -207,15 +278,26 @@ export function getResponse(userText) {
     return re.test(q);
   });
 
-  return isVaguelyOnTopic ? SOFT_FALLBACK : HARD_FALLBACK;
+  return { matched: false, answer: isVaguelyOnTopic ? SOFT_FALLBACK : HARD_FALLBACK };
 }
+
+export function getResponse(userText) {
+  return matchTopic(userText).answer;
+}
+
+export { TOPICS };
 
 export const STARTER_CHIPS = [
   'Current role?',
-  'Tell me about Hopscotch',
   'Tech stack?',
-  'Fintech APIs?',
+  'Experience by company?',
   'Education?',
-  'Products built?',
+  'Domain?',
   'How to contact?',
+  'Relevant experience in React?',
+  'Relevant experience in Frontend?',
+  'Relevant experience in Backend?',
+  'Relevant experience in Node.js, Mongo & PostgreSQL?',
+  'Relevant experience in Java?',
+  'Team size managed?',
 ];
