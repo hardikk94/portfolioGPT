@@ -9,8 +9,13 @@
   gap: 24px;
   overflow-y: auto;
   animation: popIn .35s ease both;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
-.panel::-webkit-scrollbar { width: 0; }
+.panel::-webkit-scrollbar { width: 5px; }
+.panel::-webkit-scrollbar-track { background: transparent; }
+.panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.panel::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
 
 /* profile */
 .profile {
@@ -114,47 +119,6 @@
 .link:hover { background: var(--border); color: var(--text); }
 .link:hover .linkIcon { transform: translateX(3px); }
 .linkIcon { font-size: 13px; width: 16px; text-align: center; transition: transform .15s ease; }
-
-/* download */
-.download {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  width: 100%;
-  padding: 14px;
-  background: var(--gradient);
-  color: #fff;
-  border: none;
-  border-radius: 9px;
-  font-size: 12.5px;
-  font-weight: 600;
-  font-family: var(--font);
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity .15s, transform .1s;
-  margin-top: auto;
-}
-.download:hover  { opacity: 0.82; transform: translateY(-1px); }
-.download:active { transform: scale(0.97); }
-.download::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 40%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
-  transform: translateX(-120%) skewX(-15deg);
-}
-.download:hover::after { animation: shimmer .9s ease; }
-.download svg {
-  width: 13px; height: 13px;
-  stroke: #fff; fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 
 @media (max-width: 680px) {
   .panel { display: none; }

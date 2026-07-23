@@ -52,7 +52,7 @@ export default function ChatInput({ onSend, disabled }) {
           </svg>
         </button>
       </div>
-      <div className={styles.hint}>Offline AI · Based on real data</div>
+      <div className={styles.hint}>© {new Date().getFullYear()} Hardik Kothari</div>
     </div>
   );
 }

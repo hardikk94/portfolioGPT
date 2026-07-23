@@ -7,6 +7,79 @@
  * the most useful general answer instead of a dead-end message.
  */
 
+// Structured career timeline — lets the bot answer "what was he doing in
+// [year]" by computing an overlap instead of needing that year as a keyword.
+const TIMELINE = [
+  {
+    startYear: 2013, endYear: 2013,
+    label: 'Dexter Consultancy Pvt. Ltd.', role: 'Intern',
+    description: 'His first internship — an ASP.NET web app for a coaching institute in Mumbai, built with C# and SQL Server 2008 in a three-tier architecture.',
+  },
+  {
+    startYear: 2015, endYear: 2015,
+    label: 'Bhaskaracharya Institute for Space Applications and Geo-Informatics (BISAG)', role: 'Intern',
+    description: 'College-project internship in Gandhinagar on "Workplace," a .NET/MVC web app with Razor, SQL Server 2012, and Fusion Charts.',
+  },
+  {
+    startYear: 2015, endYear: 2016,
+    label: 'Asian Pacific Learning Leverage Limited (APPL)', role: 'Faculty – Programming & Web Development',
+    description: 'Taught programming and web development (C#, C, C++, HTML, CSS, JavaScript, jQuery, Bootstrap) to students and professionals — not an engineering role.',
+  },
+  {
+    startYear: 2017, endYear: 2019,
+    label: 'Biztech', role: 'Senior Software Engineer',
+    description: 'Built enterprise apps with Angular, Ionic, and ElectronJS, including the Water Expert IoT platform (60% maintenance reduction).',
+  },
+  {
+    startYear: 2019, endYear: 2024,
+    label: 'Simform', role: 'Technical Lead',
+    description: 'Led Hopscotch from MVP to a $10M+ funded product, building microservices, micro-frontend architecture, and real-time systems.',
+  },
+  {
+    startYear: 2024, endYear: null,
+    label: 'Avalara', role: 'SDE IV',
+    description: 'Leading fintech engineering — payments, banking integrations, and compliance — remote from Pune.',
+  },
+];
+
+function extractYear(text) {
+  const match = text.match(/\b20[1-2]\d\b/);
+  return match ? parseInt(match[0], 10) : null;
+}
+
+function buildYearAnswer(year) {
+  const currentYear = new Date().getFullYear();
+  const sorted = [...TIMELINE].sort((a, b) => a.startYear - b.startYear);
+  const matches = sorted.filter(t => year >= t.startYear && year <= (t.endYear ?? currentYear));
+
+  if (matches.length === 1) {
+    const t = matches[0];
+    return `In ${year}, Hardik was working as <strong>${t.role}</strong> at <strong>${t.label}</strong>.<br/>${t.description}`;
+  }
+  if (matches.length > 1) {
+    const parts = matches.map(t => `<strong>${t.role}</strong> at <strong>${t.label}</strong> — ${t.description}`);
+    return `${year} was a transition year — Hardik was involved in more than one thing:<br/><br/>${parts.join('<br/><br/>')}`;
+  }
+
+  const first = sorted[0];
+  const last = sorted[sorted.length - 1];
+
+  if (year < first.startYear) {
+    return `I don't have anything documented before ${first.startYear} — that's when Hardik's career starts, with his internship at <strong>${first.label}</strong>.`;
+  }
+  if (year > currentYear) {
+    return `That's in the future — I can't say what Hardik will be doing in ${year}. As of now, he's <strong>${last.role}</strong> at <strong>${last.label}</strong>.`;
+  }
+
+  // A genuine gap year within his overall career span — name the surrounding roles.
+  const before = sorted.filter(t => (t.endYear ?? currentYear) < year).pop();
+  const after = sorted.find(t => t.startYear > year);
+  if (before && after) {
+    return `I don't have a specific role documented for ${year} — his stint at <strong>${before.label}</strong> wrapped up in ${before.endYear}, and his next documented role at <strong>${after.label}</strong> began in ${after.startYear}.`;
+  }
+  return `I don't have a specific role documented for ${year}. Feel free to ask about his <strong>experience</strong> overall, or a specific company.`;
+}
+
 const TOPICS = [
   {
     id: 'greeting',
@@ -36,7 +109,19 @@ const TOPICS = [
   {
     id: 'experience',
     signals: ['work history', 'work experience', 'career', 'previous job', 'previous company', 'previous companies', 'previous work', 'companies worked', 'where worked', 'past jobs', 'past companies', 'job history', 'employment history', 'companies he worked', 'companies have you worked', 'biggest project', 'experience by company', 'experience with company name', 'company wise experience', 'experience with each company'],
-    answer: `Hardik has <strong>9+ years of experience</strong> across 3 companies:<br/><br/><strong>1. Avalara</strong> — SDE IV (2024–Present)<br/>Leading fintech engineering, remote from Pune.<br/><br/><strong>2. Simform</strong> — Technical Lead (2019–2024 · 5yr 11mo)<br/>Led Hopscotch from MVP to a $10M+ funded product — his biggest project to date. Built microservices, micro-frontend architecture, real-time systems.<br/><br/><strong>3. Biztech</strong> — Senior Software Engineer (2017–2019 · 2yr 7mo)<br/>Enterprise apps with Angular, Ionic, ElectronJS. Built Water Expert IoT platform (60% maintenance reduction).`
+    answer: `Hardik has <strong>9+ years of software engineering experience</strong> across 3 companies, plus an earlier teaching stint and two student internships:<br/><br/><strong>1. Avalara</strong> — SDE IV (2024–Present)<br/>Leading fintech engineering, remote from Pune.<br/><br/><strong>2. Simform</strong> — Technical Lead (2019–2024 · 5yr 11mo)<br/>Led Hopscotch from MVP to a $10M+ funded product — his biggest project to date. Built microservices, micro-frontend architecture, real-time systems.<br/><br/><strong>3. Biztech</strong> — Senior Software Engineer (2017–2019 · 2yr 7mo)<br/>Enterprise apps with Angular, Ionic, ElectronJS. Built Water Expert IoT platform (60% maintenance reduction).<br/><br/><strong>4. Asian Pacific Learning Leverage Limited (APPL)</strong> — Faculty, Programming &amp; Web Development (Aug 2015 – Jan 2016)<br/>Taught programming and web development to students and professionals — not an engineering role.<br/><br/><strong>5. Bhaskaracharya Institute for Space Applications and Geo-Informatics (BISAG)</strong> — Intern (Apr 2015 – Jun 2015 · 3 mo), Gandhinagar<br/>College-project internship on "Workplace," a .NET/MVC web app with Razor, SQL Server 2012, and Fusion Charts.<br/><br/><strong>6. Dexter Consultancy Pvt. Ltd.</strong> — Intern (Jul 2013 – Dec 2013 · 6 mo), Mumbai<br/>His first internship — an ASP.NET web app for a coaching institute, built with C# and SQL Server 2008 in a three-tier architecture.`
+  },
+  {
+    id: 'faculty',
+    signals: ['faculty', 'teaching experience', 'training experience', 'lecturer', 'trainer', 'instructor', 'taught', 'teach', 'teacher', 'appl', 'asian pacific learning leverage', 'teaching role', 'training role', 'faculty experience'],
+    weight: 2,
+    answer: `Before his engineering career, Hardik worked as <strong>Faculty – Programming &amp; Web Development</strong> at <strong>Asian Pacific Learning Leverage Limited (APPL)</strong> (Aug 2015 – Jan 2016) — a teaching role, not a developer role.<br/><br/>He delivered training in core programming and web technologies to students and professionals, designing structured lesson plans, preparing practical exercises, and providing one-on-one guidance on project work and coding challenges.<br/><br/>Taught: <span class="tag">C#</span> <span class="tag">C</span> <span class="tag">C++</span> <span class="tag">HTML</span> <span class="tag">CSS</span> <span class="tag">JavaScript</span> <span class="tag">jQuery</span> <span class="tag">Bootstrap</span>`
+  },
+  {
+    id: 'internships',
+    signals: ['internship', 'internships', 'intern', 'bisag', 'dexter', 'bhaskaracharya', 'college project', 'student internship'],
+    weight: 2,
+    answer: `Hardik completed two internships early in his career:<br/><br/><strong>Bhaskaracharya Institute for Space Applications and Geo-Informatics (BISAG)</strong> — Intern (Apr 2015 – Jun 2015 · 3 mo), Gandhinagar, Gujarat<br/>Joined as an intern for his 4th-year college project, working on "Workplace" — a .NET web app built with MVC, Razor, SQL Server 2012, and Fusion Charts.<br/><br/><strong>Dexter Consultancy Pvt. Ltd.</strong> — Intern (Jul 2013 – Dec 2013 · 6 mo), Mumbai, Maharashtra (On-site)<br/>His very first internship, in ASP.NET technology — worked on a coaching institute project built with <span class="tag">C#</span> and <span class="tag">SQL Server 2008</span> in a three-tier architecture.`
   },
   {
     id: 'hopscotch',
@@ -51,7 +136,7 @@ const TOPICS = [
   },
   {
     id: 'tech_stack',
-    signals: ['tech stack', 'technologies', 'technology', 'skill set', 'skills', 'tools used', 'tools you use', 'programming language', 'programming languages', 'frameworks', 'what tech', 'what tools', 'languages you know', 'stack', 'favorite language', 'strongest skill'],
+    signals: ['tech stack', 'techstack', 'technologies', 'technology', 'skill set', 'skills', 'tools used', 'tools you use', 'programming language', 'programming languages', 'frameworks', 'what tech', 'what tools', 'languages you know', 'stack', 'favorite language', 'strongest skill'],
     answer: `Hardik's full tech stack:<br/><br/><strong>Frontend</strong><br/><span class="tag">React</span> <span class="tag">TypeScript</span> <span class="tag">Angular</span> <span class="tag">Vue.js</span> <span class="tag">Redux</span> <span class="tag">MobX</span> <span class="tag">Micro Frontend</span><br/><br/><strong>Backend</strong><br/><span class="tag">Node.js</span> <span class="tag">Express</span> <span class="tag">Java</span> <span class="tag">NestJS</span> <span class="tag">GraphQL</span> <span class="tag">REST</span> <span class="tag">Socket.IO</span><br/><br/><strong>Cloud and DevOps</strong><br/><span class="tag">AWS</span> <span class="tag">Docker</span> <span class="tag">Kafka</span> <span class="tag">RabbitMQ</span> <span class="tag">CI/CD</span><br/><br/><strong>Databases</strong><br/><span class="tag">PostgreSQL</span> <span class="tag">MongoDB</span> <span class="tag">MySQL</span> <span class="tag">Redis</span> <span class="tag">DynamoDB</span><br/><br/><strong>Desktop and Mobile</strong><br/><span class="tag">ElectronJS</span> <span class="tag">React Native</span> <span class="tag">Ionic</span><br/><br/>His strongest areas are React, TypeScript, Node.js, and fintech system design.`
   },
   {
@@ -81,13 +166,13 @@ const TOPICS = [
   },
   {
     id: 'education',
-    signals: ['education', 'educational', 'degree', 'college', 'university', 'qualification', 'where did he study', 'where did you study', 'academic background', 'educational background', 'msc', 'bsc', 'studied', 'study', 'graduate', 'graduation', 'school'],
+    signals: ['education', 'educational', 'degree', 'college', 'university', 'qualification', 'where did he study', 'where did you study', 'academic background', 'educational background', 'msc', 'bsc', 'studied', 'study', 'studies', 'graduate', 'graduation', 'school'],
     answer: `Hardik's educational background:<br/><br/><strong>B.Sc. CA and IT</strong><br/>K. S. School of Business Management and Information Technology, Gujarat University — 2011 to 2014<br/><br/><strong>M.Sc. CA and IT</strong><br/>K. S. School of Business Management and Information Technology, Gujarat University — 2014 to 2016<br/><br/><strong>Professional Certificate Course in Generative AI and Machine Learning (in progress)</strong><br/>IIT Kanpur — 2025 to 2026`
   },
   {
     id: 'certifications',
     signals: ['certification', 'certifications', 'certificate', 'certificates', 'credential', 'credentials', 'iim', 'udemy', 'iit kanpur', 'training program', 'courses done', 'courses completed'],
-    answer: `Hardik holds 3 certifications:<br/><br/><strong>Professional Certificate Course in Generative AI and Machine Learning</strong><br/>IIT Kanpur — 2025 to 2026 (in progress)<br/><br/><strong>Leadership Skills</strong><br/>IIM Ahmedabad — 2025<br/><br/><strong>Master Electron: Desktop Apps</strong><br/>Udemy — 2021`
+    answer: `Hardik holds 3 certifications:<br/><br/><strong>Professional Certificate Course in Generative AI and Machine Learning</strong><br/>IIT Kanpur — 2025 to 2026 (in progress)<br/><br/><strong>Leadership Skills</strong><br/>IIM Ahmedabad — Issued Aug 2025<br/><a href="https://www.coursera.org/account/accomplishments/verify/0RMDEUKKC3XE" target="_blank" rel="noreferrer">View certificate</a><br/><br/><strong>Master Electron: Desktop Apps with HTML, JavaScript &amp; CSS</strong><br/>Udemy — Issued Apr 2021<br/><a href="https://www.udemy.com/certificate/UC-258a1b0a-ec45-4b18-8b8c-215329a01d59/" target="_blank" rel="noreferrer">View certificate</a>`
   },
   {
     id: 'domain',
@@ -95,34 +180,16 @@ const TOPICS = [
     answer: `Hardik's primary domain is <strong>Fintech</strong> — most of his career has been building payment platforms, banking integrations, and compliance systems (KYC/KYB, ACH, fraud prevention) at Avalara and Simform.<br/><br/>He also has experience in <span class="tag">SaaS</span>, <span class="tag">IoT</span>, and <span class="tag">Enterprise/Desktop</span> applications from earlier roles at Biztech.`
   },
   {
-    id: 'react_years',
-    signals: ['relevant experience in react', 'years of experience in react', 'react years of experience', 'how many years of react', 'react experience in years'],
+    id: 'frontend_react_years',
+    signals: ['relevant experience in frontend react', 'relevant experience in react', 'relevant experience in frontend', 'years of experience in react', 'years of experience in frontend', 'react years of experience', 'frontend years of experience', 'how many years of react', 'how many years of frontend', 'react experience in years', 'frontend experience in years', 'frontend and react experience', 'react and frontend experience'],
     weight: 2,
-    answer: `Hardik has <strong>6 years</strong> of relevant hands-on experience with <span class="tag">React</span>, using it across nearly every major product he's built — Hopscotch, Avalara Capital, Newton Mail, and YAC.`
-  },
-  {
-    id: 'frontend_years',
-    signals: ['relevant experience in frontend', 'years of experience in frontend', 'frontend years of experience', 'how many years of frontend', 'frontend experience in years'],
-    weight: 2,
-    answer: `Hardik has <strong>9 years</strong> of relevant frontend experience, spanning <span class="tag">React</span>, <span class="tag">Angular</span>, <span class="tag">Vue.js</span>, and <span class="tag">TypeScript</span> across web, desktop (Electron), and mobile.`
+    answer: `Hardik has <strong>9 years</strong> of relevant frontend experience overall, including <strong>6 years</strong> specifically with <span class="tag">React</span> — used across nearly every major product he's built (Hopscotch, Avalara Capital, Newton Mail, YAC), alongside <span class="tag">Angular</span>, <span class="tag">Vue.js</span>, and <span class="tag">TypeScript</span> across web, desktop (Electron), and mobile.`
   },
   {
     id: 'backend_years',
-    signals: ['relevant experience in backend', 'years of experience in backend', 'backend years of experience', 'how many years of backend', 'backend experience in years'],
+    signals: ['relevant experience in backend', 'years of experience in backend', 'backend years of experience', 'how many years of backend', 'backend experience in years', 'relevant experience in java', 'years of experience in java', 'java years of experience', 'how many years of java', 'java experience in years', 'relevant experience in node.js mongo postgresql', 'years of experience in node mongo postgresql', 'node mongo postgresql experience', 'nodejs mongo postgresql years', 'experience with node mongo and postgresql'],
     weight: 2,
-    answer: `Hardik has <strong>4 years</strong> of relevant backend experience, building APIs and services with <span class="tag">Node.js</span>, <span class="tag">NestJS</span>, <span class="tag">Java</span>, and <span class="tag">GraphQL</span> — largely in fintech systems handling payments and compliance.`
-  },
-  {
-    id: 'node_mongo_postgres_years',
-    signals: ['relevant experience in node.js mongo postgresql', 'years of experience in node mongo postgresql', 'node mongo postgresql experience', 'nodejs mongo postgresql years', 'experience with node mongo and postgresql'],
-    weight: 2,
-    answer: `Hardik has <strong>3 years</strong> of relevant experience specifically with the <span class="tag">Node.js</span> + <span class="tag">MongoDB</span> + <span class="tag">PostgreSQL</span> stack, building backend services and data layers for production systems.`
-  },
-  {
-    id: 'java_years',
-    signals: ['relevant experience in java', 'years of experience in java', 'java years of experience', 'how many years of java', 'java experience in years'],
-    weight: 2,
-    answer: `Hardik has <strong>1 year</strong> of relevant hands-on experience with <span class="tag">Java</span>, primarily used for secure backend and payment infrastructure in fintech systems at Avalara and Simform.`
+    answer: `Hardik has <strong>4 years</strong> of relevant backend experience overall, including <strong>3 years</strong> specifically with the <span class="tag">Node.js</span> + <span class="tag">MongoDB</span> + <span class="tag">PostgreSQL</span> stack and <strong>1 year</strong> with <span class="tag">Java</span> — building APIs, services, and data layers largely in fintech systems handling payments and compliance.`
   },
   {
     id: 'team_size',
@@ -223,9 +290,26 @@ function normalize(str) {
     .trim();
 }
 
+// Classic edit distance — used to tolerate small typos ("studdy" -> "study")
+// on single-word signals without needing an LLM round-trip for every misspelling.
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[a.length][b.length];
+}
+
 function scoreTopic(question, topic) {
   let score = 0;
   const weight = topic.weight || 1;
+  const words = question.split(' ');
 
   for (const signal of topic.signals) {
     const isPhrase = signal.includes(' ');
@@ -238,6 +322,11 @@ function scoreTopic(question, topic) {
       const re = new RegExp(`\\b${escaped}\\b`);
       if (re.test(question)) {
         score += 1 * weight;
+      } else if (signal.length >= 4) {
+        // No exact hit — tolerate a small typo (1 edit for short words, 2 for longer ones)
+        const maxDistance = signal.length >= 7 ? 2 : 1;
+        const hasCloseTypo = words.some(w => w.length >= 4 && levenshtein(w, signal) <= maxDistance);
+        if (hasCloseTypo) score += 1 * weight;
       }
     }
   }
@@ -254,6 +343,11 @@ export function matchTopic(userText) {
 
   if (MISUSE_SIGNALS.some(signal => q.includes(signal))) {
     return { matched: true, answer: MISUSE_FALLBACK };
+  }
+
+  const year = extractYear(q);
+  if (year) {
+    return { matched: true, answer: buildYearAnswer(year) };
   }
 
   let best = null;
@@ -292,12 +386,10 @@ export const STARTER_CHIPS = [
   'Tech stack?',
   'Experience by company?',
   'Education?',
+  'Certifications?',
   'Domain?',
   'How to contact?',
-  'Relevant experience in React?',
-  'Relevant experience in Frontend?',
+  'Relevant experience in Frontend & React?',
   'Relevant experience in Backend?',
-  'Relevant experience in Node.js, Mongo & PostgreSQL?',
-  'Relevant experience in Java?',
   'Team size managed?',
 ];

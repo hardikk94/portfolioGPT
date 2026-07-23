@@ -30,7 +30,7 @@
   transition: transform .15s ease;
 }
 .group.ai .av   { background: var(--gradient); }
-.group.user .av { background: var(--surface); color: var(--text); }
+.group.user .av { background: var(--surface); color: var(--text); border: 1.5px solid var(--border); }
 .group:hover .av { transform: scale(1.08); }
 
 .bubble {
@@ -63,6 +63,12 @@
 .group.user .bubble :global(strong) { color: rgba(255,255,255,.85); }
 .bubble :global(ul) { padding-left: 16px; margin-top: 4px; }
 .bubble :global(li) { margin-bottom: 3px; }
+.bubble :global(a) {
+  color: var(--accent-3);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.bubble :global(a:hover) { color: var(--accent-2); }
 .bubble :global(.tag) {
   display: inline-block;
   background: rgba(126,200,234,.15);

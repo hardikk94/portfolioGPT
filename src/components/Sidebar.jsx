@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Sidebar.module.css';
-import resumePdf from '../assets/Hardik-Kothari-Resume.pdf';
 import profilePhoto from '../assets/me.jpg';
 
 const FACTS = [
@@ -10,8 +9,8 @@ const FACTS = [
   { label: 'Education',  value: ['M.Sc. IT · Gujarat University', 'GenAI/ML Cert. · IIT Kanpur'] },
 ];
 
-const STACK_HI  = ['React', 'TypeScript', 'Node.js', 'Java'];
-const STACK_LO  = ['ElectronJS', 'AWS', 'PostgreSQL', 'Docker', 'Kafka', 'Redis'];
+const STACK_HI  = ['React', 'TypeScript', 'Node.js', 'Express.js', 'MongoDB', 'PostgreSQL', 'ElectronJS'];
+const STACK_LO  = ['AWS', 'Docker', 'Kafka', 'Redis', 'Java'];
 
 const LINKS = [
   { icon: '🔗', label: 'hellohardik.framer.ai', href: 'https://hellohardik.framer.ai' },
@@ -79,14 +78,6 @@ export default function Sidebar() {
           ))}
         </div>
       </div>
-
-      {/* Download */}
-      <a className={styles.download} href={resumePdf} download="Hardik-Kothari-Resume.pdf">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 15V3"/><path d="M7 10l5 5 5-5"/><path d="M3 19h18"/>
-        </svg>
-        Download Resume
-      </a>
 
     </aside>
   );

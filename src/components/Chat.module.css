@@ -79,6 +79,57 @@
   animation: pulse 2s infinite;
 }
 
+.scheduleBtn {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .13s ease, box-shadow .2s ease;
+}
+.scheduleBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(74,144,217,.35);
+}
+.scheduleBtn:active { transform: scale(.96); }
+.scheduleBtn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.downloadBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .13s ease, border-color .13s ease, background .13s ease, color .13s ease;
+}
+.downloadBtn:hover {
+  border-color: var(--accent-2);
+  background: var(--gradient);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.downloadBtn:active { transform: scale(.96); }
+.downloadBtn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+@media (max-width: 520px) {
+  .scheduleBtnText { display: none; }
+  .scheduleBtn, .downloadBtn { padding: 8px; }
+}
+
 /* sticky quick-question bar */
 .stickyChips {
   position: relative;
